@@ -7,53 +7,53 @@ import Input from "./components/input";
 const JoinFrame = () => {
   const [name, setname] = React.useState("");
   const [room, setRoom] = React.useState("");
+  let history=useHistory();
+  const navigate=()=>{
+    history.push('/')
+  }
   const [values, onChangeHandler] = useFormHook({
     group: "",
     user: "",
     password: "",
   });
-  const history=useHistory();
-  const navigate=()=>{
-    history.push('/create')
-  }
   return (
     <section className="join_container">
       <div className="login_frame">
         <div className="header">
-          <h3>Connect</h3>
+          <h3>Create Room</h3>
         </div>
         <Input
           type="text"
           name="group"
-          holder="Group Id"
+          holder="Admin Name"
           handler={onChangeHandler}
           value={values.group}
         />
         <Input
-          type="text"
+          type="password"
           name="user"
-          holder="Screen Name"
+          holder="Password"
           handler={onChangeHandler}
           value={values.user}
         />
         <Input
           type="password"
           name="password"
-          holder="Password"
+          holder="Retype Password"
           handler={onChangeHandler}
           value={values.password}
         />
 
         <div className="button_container">
           <button className="button" disabled="true">
-            SignIn
+            Create
           </button>
           <div className="cover"></div>
         </div>
 
         <div className="button_container">
           <button className="extra_button" onClick={navigate}>
-            Create A Room
+            Go SignIn
           </button>
         </div>
       </div>
