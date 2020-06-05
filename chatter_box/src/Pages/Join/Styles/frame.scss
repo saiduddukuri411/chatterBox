@@ -26,13 +26,13 @@
       }
     }
     .button_container {
-       width:100%;
-       margin-top: 20px;
-       position: relative;
-       display: flex;
-       justify-content: center;
-       .extra_button{
-        width:65%;
+      width: 100%;
+      margin-top: 20px;
+      position: relative;
+      display: flex;
+      justify-content: center;
+      .extra_button {
+        width: 65%;
         height: 30px;
         font-size: 17px;
         border-radius: 4px;
@@ -40,8 +40,7 @@
         cursor: pointer;
         color: $primary_white;
         background: $fav_red;
-
-       }
+      }
       .button {
         width: 100%;
         height: 24px;
@@ -52,15 +51,18 @@
         color: black;
         background: $btn_blue;
       }
-      .cover{
-       position: absolute;
-       width: 100%;
-       height: 24px;
-       top: 0;
-       left: 0;
-       background: $primary_grey;
-       border-radius: 4px;
-       opacity: 0.75;
+      .cover {
+        position: absolute;
+        width: 100%;
+        height: 24px;
+        top: 0;
+        left: 0;
+        background: $primary_grey;
+        border-radius: 4px;
+        opacity: 0.75;
+      }
+      .remove{
+        display: none;
       }
     }
   }

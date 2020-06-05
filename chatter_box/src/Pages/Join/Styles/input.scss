@@ -1,10 +1,16 @@
 @import "../../../../colors.scss";
 
+
+.red_border{
+  border: 3px solid $fav_red;
+}
 .input_container {
   width: 100%;
   margin-top: 25px;
   height: 27px;
   background: $primary_white;
+  
+
   .input {
     font-family: $abel_font;
     width: 100%;
@@ -23,4 +29,6 @@
         outline: none;
     }
   }
+
+ 
 }

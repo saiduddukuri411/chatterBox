@@ -16,6 +16,15 @@ const JoinFrame = () => {
     user: "",
     password: "",
   });
+  const [verify,setverify]=React.useState({
+    group: false,
+    user: false,
+    password: false
+  }) 
+  
+  const formValidationHandler=()=>{
+    return verify.group && verify.user && verify.password;
+  }
   return (
     <section className="join_container">
       <div className="login_frame">
@@ -28,6 +37,9 @@ const JoinFrame = () => {
           holder="Admin Name"
           handler={onChangeHandler}
           value={values.group}
+          verify='REQUIRED'
+          error="Required"
+          overall={setverify}
         />
         <Input
           type="password"
@@ -35,6 +47,9 @@ const JoinFrame = () => {
           holder="Password"
           handler={onChangeHandler}
           value={values.user}
+          verify='MIN'
+          error="Atleast 6 Charecters"
+          overall={setverify}
         />
         <Input
           type="password"
@@ -42,13 +57,17 @@ const JoinFrame = () => {
           holder="Retype Password"
           handler={onChangeHandler}
           value={values.password}
+          reverify={values.user}
+          error="Password Mismatch"
+          overall={setverify}
         />
 
         <div className="button_container">
           <button className="button" disabled="true">
             Create
           </button>
-          <div className="cover"></div>
+          {formValidationHandler()?null:<div className="cover"></div>}
+          
         </div>
 
         <div className="button_container">

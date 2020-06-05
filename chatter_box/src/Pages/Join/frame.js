@@ -1,5 +1,5 @@
 import React from "react";
-import { Link,useHistory } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import "./Styles/frame.scss";
 import { useFormHook } from "../hooks/formHook";
 import Input from "./components/input";
@@ -12,10 +12,14 @@ const JoinFrame = () => {
     user: "",
     password: "",
   });
-  const history=useHistory();
-  const navigate=()=>{
-    history.push('/create')
-  }
+  const checker = () => {
+    return values.group && values.user && values.password;
+  };
+
+  const history = useHistory();
+  const navigate = () => {
+    history.push("/create");
+  };
   return (
     <section className="join_container">
       <div className="login_frame">
@@ -48,7 +52,7 @@ const JoinFrame = () => {
           <button className="button" disabled="true">
             SignIn
           </button>
-          <div className="cover"></div>
+          <div className={checker() ? "cover remove" : "cover"}></div>
         </div>
 
         <div className="button_container">
