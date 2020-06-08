@@ -23,7 +23,9 @@ const JoinFrame = () => {
   }) 
   
   const formValidationHandler=()=>{
-    return verify.group && verify.user && verify.password;
+    
+
+    return verify.group && verify.user && verify.password && values.user===values.password;
   }
   return (
     <section className="join_container">

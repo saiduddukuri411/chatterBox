@@ -1,8 +1,16 @@
-const express=require('express');
-const router=express.Router();
-const {signUp} =require('../controllers/users');
+const express = require("express");
+const router = express.Router();
+const { check } = require("express-validator");
+const { signUp } = require("../controllers/users");
 
+router.post(
+  "/signup",
+  [
+    check("name").not().isEmpty(),
+    check("password").isLength({ min:6 }),
+    check("retype").isLength({ min:6 }),
+  ],
+  signUp
+);
 
-router.post("/signup",signUp);
-
-module.exports=router
+module.exports = router;
