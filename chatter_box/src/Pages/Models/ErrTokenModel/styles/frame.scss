@@ -1,0 +1,116 @@
+@import "../../../../../colors.scss";
+.Model {
+  position: fixed;
+  width: 100vw;
+  height: 100%;
+  background: $primary_grey;
+  opacity: 0.9;
+}
+.container {
+  position: fixed;
+  width: 100vw;
+  height: 100%;
+  display: flex;
+  background: transparent;
+  align-items: center;
+  justify-content: center;
+  animation: bar 1.5s ease;
+  z-index: 20;
+  .card {
+    width: 35%;
+    height: 250px;
+    background: $primary_white;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    transition: 0.3s;
+    &:hover {
+      box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+    }
+    .header {
+      width: 100%;
+      height: 60px;
+      background: $thick_blue;
+      display: flex;
+      align-items: center;
+      h2 {
+        font-family: $abel_font;
+        color: $primary_white;
+        margin-left: 10px;
+        letter-spacing: 0.15rem;
+      }
+    }
+    .desc {
+      margin-top: 10px;
+      margin-left: 7px;
+      margin-right: 5px;
+      h7 {
+        font-family: $abel_font;
+        font-size: 19px;
+        letter-spacing: 0.1rem;
+        color: black;
+        font-weight: bold;
+      }
+    }
+    .token_container {
+      width: 100%;
+      display: flex;
+      margin-top: 20px;
+      justify-content: center;
+      .token {
+        border-bottom: 2px solid black;
+        padding-bottom: 4px;
+        text-align: center;
+        h7 {
+          font-size: 17px;
+          letter-spacing: 0.08rem;
+          font-weight: bold;
+        }
+      }
+    }
+    .btn_container {
+      width: 100%;
+      margin-top: 15px;
+      display: flex;
+      justify-content: center;
+      .btn {
+        width: 100px;
+        height: 40px;
+        border-radius: 4px;
+        background: $fav_red;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        h7 {
+            font-family: $abel_font;
+            font-size: 19px;
+            letter-spacing: 0.08rem;
+            color: $primary_white;
+            font-weight: bold;
+        }
+      }
+    }
+    @media screen and (max-width: 450px) {
+      width: 90%;
+      .desc {
+        h7 {
+          font-size: 14px;
+        }
+      }
+      .token_container {
+        .token {
+          h7 {
+            font-size: 14px;
+          }
+        }
+      }
+    }
+  }
+  @keyframes bar {
+    0% {
+      top: -100%;
+    }
+    100% {
+      top: 0%;
+    }
+  }
+}

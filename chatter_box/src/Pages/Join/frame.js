@@ -3,8 +3,12 @@ import { Link, useHistory } from "react-router-dom";
 import "./Styles/frame.scss";
 import { useFormHook } from "../hooks/formHook";
 import Input from "./components/input";
+import httpHook from "../hooks/httpHook";
+import Loader from '../Models/Loader/frame';
+import Errormodel from '../Models/ErrTokenModel/frame';
 
 const JoinFrame = () => {
+  const { isLoading, Errors, clearErr, sendRequest } = httpHook();
   const [name, setname] = React.useState("");
   const [room, setRoom] = React.useState("");
   const [values, onChangeHandler] = useFormHook({
@@ -20,7 +24,32 @@ const JoinFrame = () => {
   const navigate = () => {
     history.push("/create");
   };
+
+  const signInHandler = async () => {
+    console.log(values);
+    try {
+      const response_data = await sendRequest(
+        `${process.env.REACT_APP_BACKEND_URL}/users/login`,
+        "POST",
+        JSON.stringify({
+          groupId: values.group,
+          name: values.user,
+          password: values.password,
+        }),
+        {
+          "Content-Type": "application/json",
+        }
+      );
+      if (response_data) {
+        console.log(response_data);
+      }
+    } catch (err) {}
+  };
+  if (Errors) {
+    console.log(Errors);
+  }
   return (
+    <>
     <section className="join_container">
       <div className="login_frame">
         <div className="header">
@@ -49,7 +78,7 @@ const JoinFrame = () => {
         />
 
         <div className="button_container">
-          <button className="button" disabled="true">
+          <button className="button" onClick={signInHandler}>
             SignIn
           </button>
           <div className={checker() ? "cover remove" : "cover"}></div>
@@ -62,6 +91,8 @@ const JoinFrame = () => {
         </div>
       </div>
     </section>
+    {isLoading?<Loader />:null}
+    </>
   );
 };
 export default JoinFrame;

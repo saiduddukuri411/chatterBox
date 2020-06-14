@@ -5,11 +5,55 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const { v4: uuidv4 } = require("uuid");
 const userModel = require("../models/userModel");
+const { isValidObjectId } = require("mongoose");
+
+const logIn = async (req, res, next) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return next(new httpError("invalid input details, Cannot log you in", 422));
+  }
+  const { groupId, name, password } = req.body;
+  let existingGroup;
+  try {
+    existingGroup = await userModel.findOne({ groupId: groupId });
+  } catch (err) {
+    return next(new httpError("Logging failed, try again", 500));
+  }
+  if (!existingGroup) {
+    return next(new httpError("groupId does not exist,Please create one", 401));
+  }
+  let isValidPassword;
+  try {
+    isValidPassword = await bcrypt.compare(password, existingGroup.password);
+  } catch (err) {
+    return next(new httpError("Something went wrong, try again", 500));
+  }
+  if (!isValidPassword) {
+    return next(new HttpError("invalid groupId and password passed", 500));
+  }
+  let token;
+  try {
+    token = jwt.sign(
+      { groupId: existingGroup.groupId },
+      process.env.JWT_KEY,
+      {
+        expiresIn:new Date(existingGroup.removesBy).getTime() - new Date().getTime(),
+      }
+    );
+  } catch (err) {
+    console.log(err)
+    return next(new HttpError("Something went wrong, Please try again", 500));
+  }
+  res.status(200).json({
+    expiresin:existingGroup.removesBy,
+    token:token
+  });
+};
 
 const signUp = async (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    return next(new httpError("invalid details passed", 422));
+    return next(new httpError("Empty inputs passed, Cannot sign you in", 422));
   }
   const { name, password, retype } = req.body;
   if (password != retype) {
@@ -41,13 +85,13 @@ const signUp = async (req, res, next) => {
   }
   let token;
   try {
-    token = jwt.sign({ groupId:groupId }, "chatter_secret_code", {
-      expiresIn: "1h",
+    token = jwt.sign({ groupId: groupId }, "chatter_secret_code", {
+      expiresIn: "4h",
     });
   } catch (err) {
     return next(new HttpError("user cannot be created , try again", 500));
   }
-  res.status(200).json({groupId:groupId,token:token});
+  res.status(200).json({ groupId: groupId, token: token });
 };
 
-module.exports = { signUp };
+module.exports = { signUp, logIn };

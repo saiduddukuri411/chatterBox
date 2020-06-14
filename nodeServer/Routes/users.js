@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const { check } = require("express-validator");
-const { signUp } = require("../controllers/users");
+const { signUp,logIn } = require("../controllers/users");
 
 router.post(
   "/signup",
@@ -11,6 +11,14 @@ router.post(
     check("retype").isLength({ min:6 }),
   ],
   signUp
+);
+router.post(
+  "/login",[
+    check("groupId").not().isEmpty(),
+    check("name").not().isEmpty(),
+    check("password").not().isEmpty()
+  ],
+  logIn
 );
 
 module.exports = router;
