@@ -4,23 +4,68 @@ import {
   Route,
   Switch,
   Redirect,
+  useHistory,
 } from "react-router-dom";
 import Join from "./Pages/Join/frame";
 import Chat from "./Pages/Chat/frame";
 import Createroom from "./Pages/Room/frame";
 import { GroupContest } from "./userContest";
 
-
 const App = () => {
   const [groupToken, setGroupToken] = React.useState(null);
+  const [logIn, setLogIn] = React.useState(false);
+  const [expiresAt, setExpiresAt] = React.useState(null);
+  const [userName, setUserName] = React.useState(null);
+  React.useEffect(() => {
+    const storedData = JSON.parse(localStorage.getItem("userData"));
+    if (storedData) {
+      if (storedData.token && storedData.expiration) {
+        if (new Date(storedData.expiration) > new Date()) {
+          setLogIn(true);
+          setGroupToken(storedData.token);
+          setExpiresAt(storedData.expiration);
+          setUserName(storedData.userName);
+        }
+      }
+    }
+  }, []);
+  React.useEffect(() => {
+    let logoutTimer;
+    if (groupToken && expiresAt) {
+      const remainingTime =
+        new Date(expiresAt).getTime() - new Date().getTime();
+      logoutTimer = setTimeout((remainingTime) => {
+        setLogIn((prev) => false);
+        setGroupToken((prev) => null);
+        setExpiresAt((prev) => null);
+        setUserName(prev=>null);
+        localStorage.removeItem("userData");
+      }, remainingTime);
+    } else {
+      clearTimeout(logoutTimer);
+    }
+  }, [groupToken, expiresAt]);
   return (
     <Router>
-      <Switch>
-        <Route path="/" exact={true} component={Join} />
-        <Route path="/chat" exact={true} component={Chat} />
-        <Route path="/create" exact={true} component={Createroom} />
-        <Redirect to="/" />
-      </Switch>
+      <GroupContest.Provider
+        value={{
+          setGroupToken,
+          setLogIn,
+          setExpiresAt,
+          logIn,
+          expiresAt,
+          userName,
+          groupToken,
+          setUserName,
+        }}
+      >
+        <Switch>
+          <Route path="/" exact={true} component={Join} />
+          {logIn ? <Route path="/chat" exact={true} component={Chat} /> : null}
+          <Route path="/create" exact={true} component={Createroom} />
+          <Redirect to="/" />
+        </Switch>
+      </GroupContest.Provider>
     </Router>
   );
 };

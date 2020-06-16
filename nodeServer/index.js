@@ -6,6 +6,7 @@ const http = require("http");
 const genralRouter = require("./Routes/router");
 const userRoute = require("./Routes/users");
 const mongoose = require("mongoose");
+const {addUser,removeUser,getUser,getUserById}=require('./controllers/chats');
 
 const PORT = process.env.PORT || 5000;
 
@@ -28,6 +29,9 @@ const server = http.createServer(app);
 const io = socketio(server);
 io.on("connection", (sock) => {
   console.log("we have new connection");
+  sock.on('join',({userName,token})=>{
+   console.log(userName)
+  })
 
   sock.on("disconnect", () => {
     console.log("user had left");

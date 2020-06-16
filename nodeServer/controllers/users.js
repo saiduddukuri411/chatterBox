@@ -1,4 +1,4 @@
-const Httperror = require("../models/http_error");
+
 const httpError = require("../models/http_error");
 const { validationResult } = require("express-validator");
 const bcrypt = require("bcryptjs");
@@ -29,7 +29,7 @@ const logIn = async (req, res, next) => {
     return next(new httpError("Something went wrong, try again", 500));
   }
   if (!isValidPassword) {
-    return next(new HttpError("invalid groupId and password passed", 500));
+    return next(new httpError("invalid groupId and password passed", 500));
   }
   let token;
   try {
@@ -42,7 +42,7 @@ const logIn = async (req, res, next) => {
     );
   } catch (err) {
     console.log(err)
-    return next(new HttpError("Something went wrong, Please try again", 500));
+    return next(new httpError("Something went wrong, Please try again", 500));
   }
   res.status(200).json({
     expiresin:existingGroup.removesBy,
@@ -68,7 +68,7 @@ const signUp = async (req, res, next) => {
   try {
     hashedPassword = await bcrypt.hash(password, 12);
   } catch (e) {
-    return next(new HttpError("failed to take password , try again", 422));
+    return next(new httpError("failed to take password , try again", 422));
   }
   const groupId = uuidv4();
   const user = new userModel({
@@ -89,7 +89,7 @@ const signUp = async (req, res, next) => {
       expiresIn: "4h",
     });
   } catch (err) {
-    return next(new HttpError("user cannot be created , try again", 500));
+    return next(new httpError("user cannot be created , try again", 500));
   }
   res.status(200).json({ groupId: groupId, token: token });
 };
