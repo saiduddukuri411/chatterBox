@@ -10,12 +10,15 @@ import Join from "./Pages/Join/frame";
 import Chat from "./Pages/Chat/frame";
 import Createroom from "./Pages/Room/frame";
 import { GroupContest } from "./userContest";
+import io from "socket.io-client";
 
 const App = () => {
   const [groupToken, setGroupToken] = React.useState(null);
   const [logIn, setLogIn] = React.useState(false);
   const [expiresAt, setExpiresAt] = React.useState(null);
   const [userName, setUserName] = React.useState(null);
+  const [userSocket,setSocket]=React.useState(null)
+  const [activeUsers,setUsers]=React.useState([])
   React.useEffect(() => {
     const storedData = JSON.parse(localStorage.getItem("userData"));
     if (storedData) {
@@ -29,6 +32,12 @@ const App = () => {
       }
     }
   }, []);
+  React.useEffect(()=>{
+    if(userSocket && !logIn){
+      userSocket.emit("logout");
+      userSocket.off();
+    }
+  },[userSocket,logIn])
   React.useEffect(() => {
     let logoutTimer;
     if (groupToken && expiresAt) {
@@ -57,6 +66,9 @@ const App = () => {
           userName,
           groupToken,
           setUserName,
+          setSocket,
+          activeUsers,
+          setUsers
         }}
       >
         <Switch>

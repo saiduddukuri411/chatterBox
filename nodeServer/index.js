@@ -6,7 +6,14 @@ const http = require("http");
 const genralRouter = require("./Routes/router");
 const userRoute = require("./Routes/users");
 const mongoose = require("mongoose");
-const {addUser,removeUser,getUser,getUserById}=require('./controllers/chats');
+const jwt = require("jsonwebtoken");
+const {
+  addUser,
+  removeUser,
+  getUser,
+  getUserById,
+  users,
+} = require("./controllers/chats");
 
 const PORT = process.env.PORT || 5000;
 
@@ -28,13 +35,62 @@ app.use((req, res, next) => {
 const server = http.createServer(app);
 const io = socketio(server);
 io.on("connection", (sock) => {
-  console.log("we have new connection");
-  sock.on('join',({userName,token})=>{
-   console.log(userName)
-  })
+  sock.on("join", ({ userName, token }, callback) => {
+    const decodeToken = jwt.verify(token, process.env.JWT_KEY);
+    const room = decodeToken.groupId;
+    //const room=decodeToken.groupId
+    const { error, user } = addUser({
+      id: sock.id,
+      name: userName,
+      room: room,
+    });
+    if (error) {
+      return callback(error);
+    }
+    sock.emit("message", {
+      user: "admin",
+      text: `${user.name}, welcome to room`,
+      active: users,
+    });
+    sock.broadcast
+      .to(user.room)
+      .emit("message", {
+        user: "admin",
+        text: `${user.name}, has joined!`,
+        active: users,
+      });
+    sock.join(user.room);
+    callback();
+  });
+  sock.on("sendMesssage", (message, callback) => {
+    const user = getUser(sock.id);
+    io.to(user.room).emit("message", {
+      user: user.name,
+      text: message,
+      active: users,
+    });
+    callback();
+  });
 
   sock.on("disconnect", () => {
-    console.log("user had left");
+    const user = removeUser(sock.id);
+    if (user) {
+      io.to(user.room).emit("message", {
+        user: "admin",
+        text: `${user.name} has left`,
+        active: users,
+      });
+    }
+  });
+  sock.on("logout", () => {
+    const user = removeUser(sock.id);
+    if (user) {
+      io.to(user.room).emit("message", {
+        user: "admin",
+        text: `${user.name} has left`,
+        active: users,
+      });
+    }
   });
 });
 

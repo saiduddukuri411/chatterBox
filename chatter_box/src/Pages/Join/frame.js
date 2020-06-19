@@ -15,6 +15,7 @@ const JoinFrame = () => {
     setExpiresAt,
     logIn,
     setUserName,
+    userName
   } = React.useContext(GroupContest);
   const { isLoading, Errors, clearErr, sendRequest } = httpHook();
   const [name, setname] = React.useState("");
@@ -60,7 +61,6 @@ const JoinFrame = () => {
             userName:values.user,
           })
         );
-        history.push("/chat");
       }
     } catch (err) {}
   };
@@ -71,7 +71,7 @@ const JoinFrame = () => {
     if (logIn) {
       NavigateChat();
     }
-  }, [logIn]);
+  }, [userName]);
   return (
     <>
       {isLoading ? <Loader /> : null}

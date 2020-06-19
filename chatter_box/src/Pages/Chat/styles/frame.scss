@@ -1,6 +1,93 @@
-@import '../../../../colors.scss';
-.chat_container{
-    width:100vw;
-    height:100vh;
-    background: $bg;
+@import "../../../../colors.scss";
+.chat_container {
+  width: 100vw;
+  height: 100vh;
+  background: $bg;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  .chate_frame {
+    position:relative;
+    width: 38%;
+    height: 65%;
+    background: $vvlite_white;
+    border-radius: 4px;
+    box-shadow: $box-shadow;
+    display: flex;
+    flex-direction: column;
+    .chat_header {
+      width: 100%;
+      height: 60px;
+      border-top-left-radius: 4px;
+      border-top-right-radius: 4px;
+      background: $linkedin_blue;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      h7 {
+        font-family: $abel_font;
+        font-size: 18px;
+        letter-spacing: 0.1rem;
+        color: $lightning;
+        font-weight: bold;
+        margin-left: 15px;
+        @media screen and (max-width:500px){
+          font-size: 15px;
+          letter-spacing: 0.07rem;
+        }
+      }
+      .online_users{
+        margin-left: 6px;
+        font-size: 28px;
+        color: $vlite_white;
+        cursor: pointer;
+        &:hover{
+          color: $primary_white;
+        }
+        @media screen and (max-width:500px){
+          font-size: 22px;
+        }
+      }
+      .closer {
+        margin-right: 10px;
+        cursor: pointer;
+        h7 {
+          color: $vlite_white;
+        }
+      }
+    }
+    .message_box {
+      width: 100%;
+      height: 40px;
+      margin-top: auto;
+      border-bottom-left-radius: 4px;
+      border-bottom-right-radius: 4px;
+      background: $primary_white;
+      display: flex;
+      align-items: center;
+      overflow-wrap: break-word;
+      .msg_input {
+        margin-left: 2px;
+        width: 91%;
+        height: 80%;
+        border-style: none;
+        background: transparent;
+        border-color: Transparent;
+        overflow: auto;
+        outline: none;
+        //border:0.05px solid $vvlite_white;
+      }
+      .send_item{
+          font-size: 30px;
+          cursor: pointer;
+      }
+    }
+    @media screen and (max-width: 500px) {
+      width: 85%;
+    }
+    @media screen and (min-width: 550px) and (max-width: 1220px) {
+      width: 60%;
+    }
+  }
 }

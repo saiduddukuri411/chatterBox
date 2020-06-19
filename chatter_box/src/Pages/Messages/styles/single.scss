@@ -1,0 +1,61 @@
+@import "../../../../colors.scss";
+.first_container {
+  width: 99%;
+  display: flex;
+  margin-bottom: 10px;
+  justify-content: flex-start;
+  
+  .mess_frame {
+    max-width: 65%;
+    border-radius: 10px;
+    margin-left: 5px;
+    .from {
+      font-size: 14px;
+      letter-spacing: 0.09rem;
+      font-weight: bold;
+    }
+    .msg_div {
+      // max-width: 60%;
+      margin-top: 3px;
+      padding: 10px 10px;
+      background-color: $thick_green;
+      border-radius: 10px;
+      margin-left: 5px;
+      .user_msg {
+        font-family: $abel_font;
+        font-size: 15px;
+        letter-spacing: 0.09rem;
+        font-weight: bold;
+        color: $primary_white;
+        overflow-wrap: break-word;
+      }
+      
+    }
+    .red_bg{
+       background: $fav_red; 
+    }
+  }
+}
+
+.second_container {
+  width: 99%;
+  display: flex;
+  margin-bottom: 10px;
+  justify-content: flex-end;
+  .secMsgContainer {
+    max-width: 60%;
+    padding: 10px 10px;
+    background: $vlite_blue;
+    border-radius: 10px;
+    margin-right: 5px;
+    .sec_msg {
+      font-family: $abel_font;
+      font-size: 15px;
+      letter-spacing: 0.05rem;
+      color: $primary_white;
+      font-weight: bold;
+      width: 99%;
+      overflow-wrap: break-word;
+    }
+  }
+}

@@ -1,0 +1,84 @@
+@import "../../../../colors.scss";
+.drawer_container {
+  position: absolute;
+  height: 100%;
+  width: 43%;
+  background: $sd;
+  top: 0;
+  left: 0;
+  animation: appear 0.8s ease;
+  .drawer_header {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    .closer {
+        margin-right: 15px;
+        margin-top: 15px;
+        font-size: 20px;
+        cursor: pointer;
+    }
+    
+  }
+  .activ_container{
+    margin-top: 20px;
+    margin-left: 1px;
+    width:95%;
+    height:85%;
+    //border:0.1px solid red;
+    .user_div{
+      width:95%;
+      // margin-bottom: 7px;
+      margin-right:1px;
+      margin-left: 2px;
+      display: flex;
+      align-items: center;
+      h7{
+        color: $primary_white;
+        font-family: $abel_font;
+        font-size: 15px;
+        letter-spacing: 0.07rem;
+        margin-left: 5px;
+      }
+      .dot{
+        font-size: 40px;
+        color: $form_green;
+        background: none;
+        border: none;
+        
+        
+      }
+    }
+  }
+  @keyframes appear {
+    0% {
+      width: 0%;
+    }
+    100% {
+      width: 43%;
+    }
+  }
+
+  @media screen and (max-width: 500px) {
+    width: 65%;
+    animation: appears 0.8s ease;
+    @keyframes appears {
+      0% {
+        width: 0%;
+      }
+      100% {
+        width: 65%;
+      }
+    }
+  }
+}
+.appear {
+  animation: appear 1s ease;
+  @keyframes appear {
+    0% {
+      width: 0%;
+    }
+    100% {
+      width: 43%;
+    }
+  }
+}

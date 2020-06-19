@@ -6,6 +6,7 @@ const jwt = require("jsonwebtoken");
 const { v4: uuidv4 } = require("uuid");
 const userModel = require("../models/userModel");
 const { isValidObjectId } = require("mongoose");
+const {checkUserByRoom}=require('./chats');
 
 const logIn = async (req, res, next) => {
   const errors = validationResult(req);
@@ -31,6 +32,13 @@ const logIn = async (req, res, next) => {
   if (!isValidPassword) {
     return next(new httpError("invalid groupId and password passed", 500));
   }
+  
+  if(checkUserByRoom(groupId,name)){
+    console.log('checkmarked entered')
+    return next(new httpError("screen name already exists in room, pick other name", 401))
+  }
+  
+
   let token;
   try {
     token = jwt.sign(
@@ -85,7 +93,7 @@ const signUp = async (req, res, next) => {
   }
   let token;
   try {
-    token = jwt.sign({ groupId: groupId }, "chatter_secret_code", {
+    token = jwt.sign({ groupId: groupId }, process.env.JWT_KEY, {
       expiresIn: "4h",
     });
   } catch (err) {
