@@ -110,7 +110,7 @@ app.use((error, req, res, next) => {
 });
 
 const url =
-  "mongodb+srv://saiduddukuri:Sgsgbs!456@cluster0-ib2iv.mongodb.net/chatterdb?retryWrites=true&w=majority";
+  `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0-ib2iv.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`;
 
 mongoose
   .connect(url)
