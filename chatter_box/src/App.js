@@ -1,4 +1,4 @@
-import React from "react";
+import React,{Suspense} from "react";
 import {
   BrowserRouter as Router,
   Route,
@@ -7,18 +7,20 @@ import {
   useHistory,
 } from "react-router-dom";
 import Join from "./Pages/Join/frame";
-import Chat from "./Pages/Chat/frame";
-import Createroom from "./Pages/Room/frame";
+//import Chat from "./Pages/Chat/frame";
+//import Createroom from "./Pages/Room/frame";
+import Loader from './Pages/Models/Loader/frame';
 import { GroupContest } from "./userContest";
 import io from "socket.io-client";
-
+const Createroom = React.lazy(() => import("./Pages/Room/frame"));
+const Chat = React.lazy(() => import("./Pages/Chat/frame"));
 const App = () => {
   const [groupToken, setGroupToken] = React.useState(null);
   const [logIn, setLogIn] = React.useState(false);
   const [expiresAt, setExpiresAt] = React.useState(null);
   const [userName, setUserName] = React.useState(null);
-  const [userSocket,setSocket]=React.useState(null)
-  const [activeUsers,setUsers]=React.useState([])
+  const [userSocket, setSocket] = React.useState(null);
+  const [activeUsers, setUsers] = React.useState([]);
   React.useEffect(() => {
     const storedData = JSON.parse(localStorage.getItem("userData"));
     if (storedData) {
@@ -32,12 +34,12 @@ const App = () => {
       }
     }
   }, []);
-  React.useEffect(()=>{
-    if(userSocket && !logIn){
+  React.useEffect(() => {
+    if (userSocket && !logIn) {
       userSocket.emit("logout");
       userSocket.off();
     }
-  },[userSocket,logIn])
+  }, [userSocket, logIn]);
   React.useEffect(() => {
     let logoutTimer;
     if (groupToken && expiresAt) {
@@ -47,7 +49,7 @@ const App = () => {
         setLogIn((prev) => false);
         setGroupToken((prev) => null);
         setExpiresAt((prev) => null);
-        setUserName(prev=>null);
+        setUserName((prev) => null);
         localStorage.removeItem("userData");
       }, remainingTime);
     } else {
@@ -56,6 +58,7 @@ const App = () => {
   }, [groupToken, expiresAt]);
   return (
     <Router>
+      <Suspense fallback={<Loader />}>
       <GroupContest.Provider
         value={{
           setGroupToken,
@@ -68,7 +71,7 @@ const App = () => {
           setUserName,
           setSocket,
           activeUsers,
-          setUsers
+          setUsers,
         }}
       >
         <Switch>
@@ -78,6 +81,7 @@ const App = () => {
           <Redirect to="/" />
         </Switch>
       </GroupContest.Provider>
+      </Suspense>
     </Router>
   );
 };
